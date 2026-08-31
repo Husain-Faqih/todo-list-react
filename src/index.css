@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #1e3a5f 0%, transparent 35%), #0f172a;
+  color: #f8fafc;
+}
+
+.todo-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(77, 166, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.todo-container h1 {
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4da6ff, #8ecbff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.input-group input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  outline: none;
+  background: #0f172a;
+  color: #f8fafc;
+  transition: 0.2s ease;
+}
+
+.input-group input::placeholder {
+  color: #64748b;
+}
+
+.input-group input:focus {
+  border-color: #4da6ff;
+  box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.12);
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.input-group button {
+  background: #4da6ff;
+  color: white;
+  box-shadow: 0 5px 15px rgba(77, 166, 255, 0.2);
+}
+
+.input-group button:hover {
+  background: #268cff;
+  box-shadow: 0 7px 20px rgba(77, 166, 255, 0.3);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.card {
+  margin-top: 18px;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  background: #172235;
+  color: #cbd5e1;
+  font-size: 13px;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  background: #334155;
+  animation: taskAppear 0.3s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+li:hover {
+  transform: translateY(-2px);
+  background: #3b4b63;
+}
+
+li span {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  color: #f1f5f9;
+  word-break: break-word;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+li span:hover {
+  color: #8ecbff;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.45;
+}
+
+li>button {
+  flex-shrink: 0;
+  padding: 8px 10px;
+  background: #ef4444;
+  color: white;
+  font-size: 15px;
+}
+
+li>button:hover {
+  background: #dc2626;
+  box-shadow: 0 5px 15px rgba(239, 68, 68, 0.25);
+}
+
+.confirm-box {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 10px;
+  background: #1e293b;
+  text-align: center;
+  animation: confirmAppear 0.2s ease;
+}
+
+.confirm-box p {
+  margin-bottom: 12px;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.confirm-buttons button {
+  padding: 8px 14px;
+}
+
+.cancel-button {
+  background: #64748b;
+  color: white;
+}
+
+.cancel-button:hover {
+  background: #475569;
+}
+
+.confirm-delete-button {
+  background: #ef4444;
+  color: white;
+}
+
+.confirm-delete-button:hover {
+  background: #dc2626;
+}
+
+@keyframes taskAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes confirmAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 15px;
+  }
+
+  .todo-container {
+    padding: 22px;
+    border-radius: 15px;
+  }
+
+  .todo-container h1 {
+    font-size: 26px;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .input-group button {
+    width: 100%;
+  }
+
+  .card {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+}
