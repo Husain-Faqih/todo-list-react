@@ -8,7 +8,7 @@ function App() {
   });
 
   const [inputValue, setInputValue] = useState("");
-  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -28,6 +28,7 @@ function App() {
     setTodos([
       ...todos,
       {
+        id: crypto.randomUUID(),
         text: todoText,
         completed: false,
       },
@@ -36,15 +37,15 @@ function App() {
     setInputValue("");
   }
 
-  function handleHapus(index) {
-    const todosBaru = todos.filter((todo, i) => i !== index);
+  function handleHapus(id) {
+    const todosBaru = todos.filter((todo) => todo.id !== id);
 
     setTodos(todosBaru);
   }
 
-  function handleToggle(index) {
-    const todosBaru = todos.map((todo, i) => {
-      if (i === index) {
+  function handleToggle(id) {
+    const todosBaru = todos.map((todo) => {
+      if (todo.id === id) {
         return {
           ...todo,
           completed: !todo.completed,
@@ -83,31 +84,31 @@ function App() {
       </p>
 
       <ul>
-        {todos.map((todo, index) => (
-          <li key={index}>
+        {todos.map((todo) => (
+          <li key={todo.id} className="todo-item">
             <span
-              onClick={() => handleToggle(index)}
+              onClick={() => handleToggle(todo.id)}
               className={todo.completed ? "completed" : ""}
             >
               {todo.text}
             </span>
 
-            <button onClick={() => setDeleteIndex(index)}>🗑</button>
+            <button onClick={() => setDeleteId(todo.id)}>🗑</button>
 
-            {deleteIndex === index && (
+            {deleteId === todo.id && (
               <div className="confirm-box">
                 <p>Yakin ingin menghapus tugas ini?</p>
-
+              
                 <div className="confirm-buttons">
                   <button
                     className="cancel-button"
-                    onClick={() => setDeleteIndex(null)}
+                    onClick={() => setDeleteId(null)}
                   >
                     Batal
                   </button>
                   <button
                     className="confirm-delete-button"
-                    onClick={() => handleHapus(index)}
+                    onClick={() => handleHapus(todo.id)}
                   >
                     Hapus
                   </button>
