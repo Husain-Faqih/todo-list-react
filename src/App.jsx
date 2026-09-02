@@ -9,7 +9,7 @@ function App() {
 
   const [inputValue, setInputValue] = useState("");
   const [deleteId, setDeleteId] = useState(null);
-
+  
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
