@@ -70,6 +70,16 @@ button {
   opacity: 0.85;
 }
 
+.input-error {
+  border: 1px solid #ef4444 !important;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
 .priority-group {
   display: flex;
   align-items: center;
