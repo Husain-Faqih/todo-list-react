@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
+import TodoInput from "./components/todoInput";
+import FilterButtons from "./components/FilterButtons";
+import TodoList from "./components/TodoList";
 
 function App() {
   const [todos, setTodos] = useState(() => {
     const savedTodos = localStorage.getItem("todos");
-
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
 
   const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState("");
+  const [editError, setEditError] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [editId, setEditId] = useState(null);
   const [editValue, setEditValue] = useState("");
@@ -20,6 +24,7 @@ function App() {
 
   const completed = todos.filter((todo) => todo.completed).length;
   const pending = todos.length - completed;
+
   const todosTampil = todos.filter((todo) => {
     if (filter === "selesai") {
       return todo.completed;
@@ -36,9 +41,11 @@ function App() {
     const todoText = inputValue.trim();
 
     if (todoText === "") {
-      alert("Tugas tidak boleh kosong!");
+      setError("Tugas tidak boleh kosong!");
       return;
     }
+
+    setError("");
 
     setTodos([
       ...todos,
@@ -78,15 +85,18 @@ function App() {
   function handleEdit(todo) {
     setEditId(todo.id);
     setEditValue(todo.text);
+    setEditError("");
   }
 
   function handleSimpanEdit(id) {
     const textBaru = editValue.trim();
 
     if (textBaru === "") {
-      alert("Tugas tidak boleh kosong!");
+      setEditError("Tugas tidak boleh kosong!");
       return;
     }
+
+    setEditError("");
 
     const todosBaru = todos.map((todo) => {
       if (todo.id === id) {
@@ -113,24 +123,16 @@ function App() {
     <div className="todo-container">
       <h1>My Todo List</h1>
 
-      <div className="input-group">
-        <input
-          type="text"
-          placeholder="Masukkan Tugas.."
-          value={inputValue}
-          onChange={(event) => setInputValue(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleTambah();
-            }
-          }}
-        />
-
-        <button onClick={handleTambah}>Tambah</button>
-      </div>
+      <TodoInput
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        handleTambah={handleTambah}
+        error={error}
+      />
 
       <div className="priority-group">
         <label>Prioritas:</label>
+
         <select
           value={priority}
           onChange={(event) => setPriority(event.target.value)}
@@ -146,94 +148,22 @@ function App() {
         {pending}
       </p>
 
-      <div className="filter-buttons">
-        <button
-          className={filter === "semua" ? "active" : ""}
-          onClick={() => setFilter("semua")}
-        >
-          Semua
-        </button>
+      <FilterButtons filter={filter} setFilter={setFilter} />
 
-        <button
-          className={filter === "selesai" ? "active" : ""}
-          onClick={() => setFilter("selesai")}
-        >
-          Selesai
-        </button>
-
-        <button
-          className={filter === "belum" ? "active" : ""}
-          onClick={() => setFilter("belum")}
-        >
-          Belum selesai
-        </button>
-      </div>
-
-      <ul>
-        {todosTampil.map((todo) => (
-          <li key={todo.id} className="todo-item">
-            {editId === todo.id ? (
-              <div className="edit-group">
-                <input
-                  type="text"
-                  value={editValue}
-                  onChange={(event) => setEditValue(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      handleSimpanEdit(todo.id);
-                    }
-                  }}
-                />
-
-                <button onClick={() => handleSimpanEdit(todo.id)}>
-                  Simpan
-                </button>
-
-                <button onClick={handleBatalEdit}>Batal</button>
-              </div>
-            ) : (
-              <>
-                <span
-                  onClick={() => handleToggle(todo.id)}
-                  className={todo.completed ? "completed" : ""}
-                >
-                  {todo.text}
-                </span>
-
-                <span className={`priority ${todo.priority}`}>
-                  {todo.priority}
-                </span>
-
-                <button onClick={() => handleEdit(todo)}>✏️</button>
-
-                <button onClick={() => setDeleteId(todo.id)}>🗑️</button>
-              </>
-            )}
-
-            {deleteId === todo.id && (
-              <div className="confirm-box">
-                <p>Yakin ingin menghapus tugas ini?</p>
-
-                <div className="confirm-buttons">
-                  <button
-                    className="cancel-button"
-                    onClick={() => setDeleteId(null)}
-                  >
-                    Batal
-                  </button>
-
-                  <button
-                    className="confirm-delete-button"
-                    onClick={() => handleHapus(todo.id)}
-                  >
-                    Hapus
-                  </button>
-                </div>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      <TodoList
+        todos={todosTampil}
+        editId={editId}
+        editValue={editValue}
+        setEditValue={setEditValue}
+        handleEdit={handleEdit}
+        handleSimpanEdit={handleSimpanEdit}
+        handleBatalEdit={handleBatalEdit}
+        handleToggle={handleToggle}
+        setDeleteId={setDeleteId}
+        deleteId={deleteId}
+        handleHapus={handleHapus}
+        editError={editError}
+      />
     </div>
   );
 }
