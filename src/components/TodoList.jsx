@@ -2,17 +2,11 @@ import TodoItem from "./TodoItem";
 
 function TodoList({
   todos,
-  editId,
-  editValue,
-  editError,
-  setEditValue,
-  handleEdit,
-  handleSimpanEdit,
-  handleBatalEdit,
+  editState,
+  editActions,
+  deleteState,
+  deleteActions,
   handleToggle,
-  setDeleteId,
-  deleteId,
-  handleHapus,
 }) {
   return (
     <ul>
@@ -20,17 +14,11 @@ function TodoList({
         <TodoItem
           key={todo.id}
           todo={todo}
-          editId={editId}
-          editValue={editValue}
-          editError={editError}
-          setEditValue={setEditValue}
-          handleEdit={handleEdit}
-          handleSimpanEdit={handleSimpanEdit}
-          handleBatalEdit={handleBatalEdit}
+          editState={editState}
+          editActions={editActions}
+          deleteState={deleteState}
+          deleteActions={deleteActions}
           handleToggle={handleToggle}
-          setDeleteId={setDeleteId}
-          deleteId={deleteId}
-          handleHapus={handleHapus}
         />
       ))}
     </ul>

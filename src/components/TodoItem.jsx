@@ -1,37 +1,33 @@
 function TodoItem({
   todo,
-  editId,
-  editValue,
-  editError,
-  setEditValue,
-  handleEdit,
-  handleSimpanEdit,
-  handleBatalEdit,
+  editState,
+  editActions,
+  deleteState,
+  deleteActions,
   handleToggle,
-  setDeleteId,
-  deleteId,
-  handleHapus,
 }) {
   return (
     <li className="todo-item">
-      {editId === todo.id ? (
+      {editState.id === todo.id ? (
         <div className="edit-group">
           <input
             type="text"
-            value={editValue}
-            onChange={(event) => setEditValue(event.target.value)}
+            value={editState.value}
+            onChange={(event) => editActions.setValue(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
-                handleSimpanEdit(todo.id);
+                editActions.save(todo.id);
               }
             }}
           />
 
-          {editError && <p className="error-message">⚠ {editError}</p>}
+          {editState.error && (
+            <p className="error-message">⚠ {editState.error}</p>
+          )}
 
-          <button onClick={() => handleSimpanEdit(todo.id)}>Simpan</button>
+          <button onClick={() => editActions.save(todo.id)}>Simpan</button>
 
-          <button onClick={handleBatalEdit}>Batal</button>
+          <button onClick={editActions.cancel}>Batal</button>
         </div>
       ) : (
         <>
@@ -44,24 +40,27 @@ function TodoItem({
 
           <span className={`priority ${todo.priority}`}>{todo.priority}</span>
 
-          <button onClick={() => handleEdit(todo)}>✏️</button>
+          <button onClick={() => editActions.start(todo)}>✏️</button>
 
-          <button onClick={() => setDeleteId(todo.id)}>🗑️</button>
+          <button onClick={() => deleteActions.setId(todo.id)}>🗑️</button>
         </>
       )}
 
-      {deleteId === todo.id && (
+      {deleteState.id === todo.id && (
         <div className="confirm-box">
           <p>Yakin ingin menghapus tugas ini?</p>
 
           <div className="confirm-buttons">
-            <button className="cancel-button" onClick={() => setDeleteId(null)}>
+            <button
+              className="cancel-button"
+              onClick={() => deleteActions.setId(null)}
+            >
               Batal
             </button>
 
             <button
               className="confirm-delete-button"
-              onClick={() => handleHapus(todo.id)}
+              onClick={() => deleteActions.remove(todo.id)}
             >
               Hapus
             </button>

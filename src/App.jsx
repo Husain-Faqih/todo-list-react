@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import TodoInput from "./components/todoInput";
+import TodoInput from "./components/TodoInput";
 import FilterButtons from "./components/FilterButtons";
 import TodoList from "./components/TodoList";
+import TodoStats from "./components/TodoStats";
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -21,9 +22,6 @@ function App() {
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-
-  const completed = todos.filter((todo) => todo.completed).length;
-  const pending = todos.length - completed;
 
   const todosTampil = todos.filter((todo) => {
     if (filter === "selesai") {
@@ -119,6 +117,28 @@ function App() {
     setEditValue("");
   }
 
+  const editState = {
+    id: editId,
+    value: editValue,
+    error: editError,
+  };
+
+  const editActions = {
+    setValue: setEditValue,
+    start: handleEdit,
+    save: handleSimpanEdit,
+    cancel: handleBatalEdit,
+  };
+
+  const deleteState = {
+    id: deleteId,
+  };
+
+  const deleteActions = {
+    setId: setDeleteId,
+    remove: handleHapus,
+  };
+
   return (
     <div className="todo-container">
       <h1>My Todo List</h1>
@@ -143,26 +163,17 @@ function App() {
         </select>
       </div>
 
-      <p className="card">
-        Total tugas: {todos.length} | Selesai: {completed} | Belum selesai:{" "}
-        {pending}
-      </p>
+      <TodoStats todos={todos} />
 
       <FilterButtons filter={filter} setFilter={setFilter} />
 
       <TodoList
         todos={todosTampil}
-        editId={editId}
-        editValue={editValue}
-        setEditValue={setEditValue}
-        handleEdit={handleEdit}
-        handleSimpanEdit={handleSimpanEdit}
-        handleBatalEdit={handleBatalEdit}
+        editState={editState}
+        editActions={editActions}
+        deleteState={deleteState}
+        deleteActions={deleteActions}
         handleToggle={handleToggle}
-        setDeleteId={setDeleteId}
-        deleteId={deleteId}
-        handleHapus={handleHapus}
-        editError={editError}
       />
     </div>
   );

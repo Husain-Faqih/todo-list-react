@@ -1,10 +1,10 @@
-function todoInput({ inputValue, setInputValue, handleTambah, error }) {
+function TodoInput({ inputValue, setInputValue, handleTambah, error }) {
   return (
     <>
       <div className="input-group">
         <input
           type="text"
-          placeholder="Massukkan Tugas.."
+          placeholder="Masukkan Tugas.."
           value={inputValue}
           onChange={(event) => {
             setInputValue(event.target.value);
@@ -13,9 +13,9 @@ function todoInput({ inputValue, setInputValue, handleTambah, error }) {
 
         <button onClick={handleTambah}>Tambah</button>
       </div>
-      {error && <p className="error-message">⚠{error}</p>}
+      {error && <p className="error-message">⚠ {error}</p>}
     </>
   );
 }
 
-export default todoInput;
+export default TodoInput;
